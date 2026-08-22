@@ -251,13 +251,20 @@ Default URLs:
 
 ## Seed Accounts
 
-The seed script creates:
+The seed script creates the following demo accounts:
 
-- 1 admin using `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD`.
-- 4 developers: `developer1@xelon.local` through `developer4@xelon.local`, using `SEED_DEVELOPER_PASSWORD`.
+- Admin:
+  - Email: `admin@xelon.local`
+  - Password: `admin123`
+- Developers:
+  - `developer1@xelon.local`
+  - `developer2@xelon.local`
+  - `developer3@xelon.local`
+  - `developer4@xelon.local`
+  - Password for all developers: `developer123`
 - Initial categories: Web Development, App Development, Payment.
 
-Passwords are hashed before storage. Do not commit real `.env` files.
+These are demo credentials for evaluation. Passwords are hashed before storage. Do not use them for production, and do not commit real `.env` files.
 
 ## Testing
 
@@ -318,7 +325,7 @@ Deployment has not been completed until the deployed frontend, backend, MongoDB 
 
 ## Live Demo
 
-Placeholder: `<deployed-frontend-url>`
+https://xelon-issue-tracker-frontend.vercel.app/login
 
 ## GitHub Repository
 
