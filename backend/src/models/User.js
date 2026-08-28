@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       select: false
     },
+    developerPasswordEncrypted: {
+      type: String,
+      select: false
+    },
     role: {
       type: String,
       enum: roles,
@@ -75,6 +79,7 @@ userSchema.set('toJSON', {
   virtuals: true,
   transform(_doc, ret) {
     delete ret.passwordHash;
+    delete ret.developerPasswordEncrypted;
     delete ret.resetPasswordToken;
     delete ret.resetPasswordExpires;
     delete ret.__v;

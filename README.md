@@ -17,6 +17,7 @@ Internal technical issues need a structured workflow so they are not lost across
 - Comments on issue details for permitted users.
 - Search and filters for status, category, priority, and developer.
 - Category management by admins.
+- Admin-managed developer accounts with activation, workload counts, and protected credential reveal.
 - Backend-enforced authorization and centralized error handling.
 - Responsive React dashboard UI with Tailwind CSS.
 - Interactive Recharts visualizations for issue status, priority, categories, and developer workload.
@@ -157,6 +158,16 @@ Create issue body:
 | GET    | `/api/dashboard/developer` | developer | Developer dashboard    |
 | GET    | `/api/dashboard/admin`     | admin     | Admin dashboard        |
 
+Admin developer management endpoints:
+
+| Method | Endpoint | Description |
+| --- | --- | --- |
+| GET | `/api/users/developers` | List managed developers with issue counts |
+| POST | `/api/users/developers` | Create an active developer account |
+| PUT | `/api/users/developers/:id` | Update developer profile details |
+| PATCH | `/api/users/developers/:id/status` | Activate or deactivate a developer |
+| GET | `/api/users/developers/:id/credential` | Retrieve one developer credential for an authenticated Admin |
+
 Dashboard responses include the existing statistics and recent issues, plus chart data scoped to the authenticated role:
 
 - User: status and priority data for the user's own issues.
@@ -197,6 +208,7 @@ Copy `backend/.env.example` to `backend/.env`.
 | `MONGO_URI`               | MongoDB or MongoDB Atlas connection string |
 | `JWT_SECRET`              | Secret used to sign JWTs                   |
 | `JWT_EXPIRES_IN`          | Token lifetime, default `7d`               |
+| `DEVELOPER_CREDENTIAL_KEY` | 64-character hexadecimal key for encrypted developer passwords |
 | `CLIENT_URL`              | Frontend URL for CORS and reset links      |
 | `SMTP_HOST`               | SMTP host for reset emails                 |
 | `SMTP_PORT`               | SMTP port                                  |
@@ -205,7 +217,6 @@ Copy `backend/.env.example` to `backend/.env`.
 | `SMTP_FROM`               | Email sender                               |
 | `SEED_ADMIN_EMAIL`        | Admin email created by seed                |
 | `SEED_ADMIN_PASSWORD`     | Admin password used by seed                |
-| `SEED_DEVELOPER_PASSWORD` | Password used by seeded developers         |
 
 ### Frontend
 
@@ -230,11 +241,11 @@ cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
 ```
 
-Fill `backend/.env` with `MONGO_URI`, `JWT_SECRET`, seed passwords, and optional SMTP settings.
+Fill `backend/.env` with `MONGO_URI`, `JWT_SECRET`, `DEVELOPER_CREDENTIAL_KEY`, the admin seed password, and optional SMTP settings.
 
 ## Running Locally
 
-Seed the required admin, developer accounts, and initial categories:
+Seed the required admin account and initial categories:
 
 ```bash
 npm run seed
@@ -260,20 +271,16 @@ Default URLs:
 
 ## Seed Accounts
 
-The seed script creates the following demo accounts:
+The seed script creates the following demo account:
 
 - Admin:
   - Email: `admin@xelon.local`
   - Password: `admin123`
-- Developers:
-  - `developer1@xelon.local`
-  - `developer2@xelon.local`
-  - `developer3@xelon.local`
-  - `developer4@xelon.local`
-  - Password for all developers: `developer123`
 - Initial categories: Web Development, App Development, Payment.
 
-These are demo credentials for evaluation. Passwords are hashed before storage. Do not use them for production, and do not commit real `.env` files.
+The Admin creates developer accounts from the Developers page. Developer passwords use bcrypt for login and are also encrypted server-side so only an authenticated Admin can explicitly reveal a managed credential. The encryption key is never sent to the frontend. Demo admin credentials are for evaluation only; do not use them for production, and do not commit real `.env` files.
+
+Developer management includes dynamic developer listings, assigned/in-progress/closed issue counts, profile editing, activation/deactivation, and active-developer-only issue assignment. Deactivation preserves existing issues and comments while preventing login and new assignments.
 
 ## Testing
 

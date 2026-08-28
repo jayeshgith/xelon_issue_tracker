@@ -32,10 +32,9 @@ const createOrUpdateUser = async ({ firstName, lastName, email, phone, role, pas
 
 const seed = async () => {
   const adminPassword = process.env.SEED_ADMIN_PASSWORD;
-  const developerPassword = process.env.SEED_DEVELOPER_PASSWORD;
 
-  if (!adminPassword || !developerPassword) {
-    throw new Error('SEED_ADMIN_PASSWORD and SEED_DEVELOPER_PASSWORD are required');
+  if (!adminPassword) {
+    throw new Error('SEED_ADMIN_PASSWORD is required');
   }
 
   await connectDB();
@@ -48,24 +47,6 @@ const seed = async () => {
     role: 'admin',
     password: adminPassword
   });
-
-  const developers = [
-    ['Developer', 'One', 'developer1@xelon.local', '+919000000011'],
-    ['Developer', 'Two', 'developer2@xelon.local', '+919000000012'],
-    ['Developer', 'Three', 'developer3@xelon.local', '+919000000013'],
-    ['Developer', 'Four', 'developer4@xelon.local', '+919000000014']
-  ];
-
-  for (const [firstName, lastName, email, phone] of developers) {
-    await createOrUpdateUser({
-      firstName,
-      lastName,
-      email,
-      phone,
-      role: 'developer',
-      password: developerPassword
-    });
-  }
 
   const categoryNames = ['Web Development', 'App Development', 'Payment'];
 

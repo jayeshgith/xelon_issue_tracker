@@ -13,7 +13,7 @@ Issue handling becomes unreliable when reports are spread across messages, calls
 Included:
 
 - User registration and login.
-- Admin and developer seed accounts.
+- Admin seed account and Admin-managed developer accounts.
 - JWT authentication.
 - Role-based authorization.
 - Issue creation, viewing, editing, assignment, status updates, deletion where permitted.
@@ -22,6 +22,7 @@ Included:
 - Dashboard counts from MongoDB.
 - Password reset with secure expiring tokens.
 - Responsive React UI.
+- Admin developer creation, editing, activation, assignment, and protected credential management.
 - Local setup and deployment documentation.
 
 Excluded:
@@ -154,6 +155,14 @@ Relationships:
 - Comment `issue` references Issue.
 - Comment `user` references User.
 
+Developer management requirements:
+
+- Only an authenticated Admin can create or edit a developer account.
+- Public registration cannot create a developer role.
+- Developer passwords must be bcrypt-hashed for login and encrypted server-side for protected Admin credential retrieval.
+- Developer credential encryption keys must be supplied through environment variables and never exposed to the frontend.
+- Inactive developers cannot log in or receive new assignments; their existing issue and comment history remains intact.
+
 ## Deployment Requirements
 
 The application is designed for:
@@ -172,7 +181,7 @@ Deployment steps:
 3. Deploy the frontend to static hosting.
 4. Configure `VITE_API_URL` to the backend `/api` URL.
 5. Configure MongoDB Atlas network access for the backend.
-6. Run the seed script once for admin/developer accounts and initial categories.
+6. Run the seed script once for the admin account and initial categories, then create developers from the Admin Developers page.
 7. Test login, issue creation, assignment, status update, comments, dashboard counts, CORS, and password reset email.
 
 Another developer can update deployment by pulling the latest code, reinstalling dependencies if needed, rebuilding the frontend, and restarting/redeploying the backend with unchanged environment variables.
