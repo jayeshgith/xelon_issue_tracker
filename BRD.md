@@ -132,9 +132,9 @@ Admin dashboard:
 
 Dashboard visualization requirements:
 
-- User dashboards shall show status, priority, and issue-creation activity charts for the user's own issues.
-- Developer dashboards shall show status, priority, and issue-creation activity charts for assigned issues.
-- Admin dashboards shall show status, priority, issue-creation activity, category, and developer workload charts using organization-wide data.
+- User dashboards shall show status and priority charts for the user's own issues.
+- Developer dashboards shall show status and priority charts for assigned issues.
+- Admin dashboards shall show status, priority, category, and developer workload charts using organization-wide data.
 - Charts shall use real database aggregation results, responsive layouts, readable tooltips, and empty states when no data exists.
 
 ## Database Requirements

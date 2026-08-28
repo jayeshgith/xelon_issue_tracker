@@ -4,8 +4,6 @@ import {
   CartesianGrid,
   Cell,
   Legend,
-  Line,
-  LineChart,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -14,7 +12,6 @@ import {
   YAxis,
 } from "recharts";
 import EmptyState from "../common/EmptyState.jsx";
-import { formatDate } from "../../utils/formatters.js";
 
 const chartColors = [
   "#0d9488",
@@ -140,46 +137,6 @@ const PriorityChart = ({ data }) => (
   </ChartPanel>
 );
 
-const TrendChart = ({ data }) => (
-  <ChartPanel
-    title="Issue activity"
-    description="Issues created over time in this view."
-  >
-    {data?.length ? (
-      <div className="h-64">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={data}
-            margin={{ top: 8, right: 8, left: -20, bottom: 0 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-            <XAxis
-              dataKey="date"
-              tickFormatter={(value) => formatDate(value).split(",")[0]}
-              tick={{ fontSize: 12 }}
-            />
-            <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
-            <Tooltip
-              content={<ChartTooltip />}
-              labelFormatter={(value) => formatDate(value)}
-            />
-            <Line
-              type="monotone"
-              dataKey="created"
-              name="Created"
-              stroke="#0d9488"
-              strokeWidth={3}
-              dot={{ r: 4 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-    ) : (
-      <EmptyChart title="No issue activity" />
-    )}
-  </ChartPanel>
-);
-
 const CategoryChart = ({ data }) => (
   <ChartPanel
     title="Issues by category"
@@ -267,9 +224,7 @@ const DashboardCharts = ({ role, charts }) => {
       )}
       {role === "admin" ? (
         <PriorityChart data={charts.priorities || []} />
-      ) : (
-        <TrendChart data={charts.trend || []} />
-      )}
+      ) : null}
       {role === "admin" ? (
         <DeveloperChart data={charts.developers || []} />
       ) : null}

@@ -38,22 +38,6 @@ const groupedCounts = async (filter, field) => {
   return results;
 };
 
-const issueTrend = async (filter) => {
-  const results = await Issue.aggregate([
-    { $match: filter },
-    {
-      $group: {
-        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-        created: { $sum: 1 },
-      },
-    },
-    { $project: { _id: 0, date: "$_id", created: 1 } },
-    { $sort: { date: 1 } },
-  ]);
-
-  return results;
-};
-
 const categoryCounts = async () => {
   const results = await Issue.aggregate([
     {
@@ -125,17 +109,15 @@ const developerWorkload = async () => {
 };
 
 const dashboardData = async (filter) => {
-  const [stats, recent, status, priorities, trend] = await Promise.all([
+  const [stats, recent, status, priorities] = await Promise.all([
     issueStats(filter),
     recentIssues(filter),
     groupedCounts(filter, "status"),
     groupedCounts(filter, "priority"),
-    issueTrend(filter),
   ]);
 
   return {
     stats,
-    trend,
     recentIssues: recent,
     charts: {
       status,

@@ -19,7 +19,7 @@ Internal technical issues need a structured workflow so they are not lost across
 - Category management by admins.
 - Backend-enforced authorization and centralized error handling.
 - Responsive React dashboard UI with Tailwind CSS.
-- Interactive Recharts visualizations for issue status, priority, activity, categories, and developer workload.
+- Interactive Recharts visualizations for issue status, priority, categories, and developer workload.
 
 ## User Roles
 
@@ -159,9 +159,9 @@ Create issue body:
 
 Dashboard responses include the existing statistics and recent issues, plus chart data scoped to the authenticated role:
 
-- User: status, priority, and issue-creation activity data for the user's own issues.
-- Developer: status, priority, and issue-creation activity data for assigned issues.
-- Admin: organization-wide status, priority, issue-creation activity, category, and developer workload data.
+- User: status and priority data for the user's own issues.
+- Developer: status and priority data for assigned issues.
+- Admin: organization-wide status, priority, category, and developer workload data.
 
 Charts use responsive Recharts components with readable hover tooltips and empty states. They stack on smaller screens and use real MongoDB aggregation results; no chart values or categories are hardcoded.
 
