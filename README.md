@@ -19,6 +19,7 @@ Internal technical issues need a structured workflow so they are not lost across
 - Category management by admins.
 - Backend-enforced authorization and centralized error handling.
 - Responsive React dashboard UI with Tailwind CSS.
+- Interactive Recharts visualizations for issue status, priority, activity, categories, and developer workload.
 
 ## User Roles
 
@@ -91,13 +92,13 @@ Authorization: Bearer <jwt>
 
 ### Authentication
 
-| Method | Endpoint | Auth | Description |
-| --- | --- | --- | --- |
-| POST | `/api/auth/register` | Public | Register a regular user |
-| POST | `/api/auth/login` | Public | Login and receive JWT |
-| GET | `/api/auth/me` | Protected | Load current profile |
-| POST | `/api/auth/forgot-password` | Public | Request reset email |
-| POST | `/api/auth/reset-password` | Public | Reset password with token |
+| Method | Endpoint                    | Auth      | Description               |
+| ------ | --------------------------- | --------- | ------------------------- |
+| POST   | `/api/auth/register`        | Public    | Register a regular user   |
+| POST   | `/api/auth/login`           | Public    | Login and receive JWT     |
+| GET    | `/api/auth/me`              | Protected | Load current profile      |
+| POST   | `/api/auth/forgot-password` | Public    | Request reset email       |
+| POST   | `/api/auth/reset-password`  | Public    | Reset password with token |
 
 Register body:
 
@@ -114,14 +115,14 @@ Register body:
 
 ### Issues
 
-| Method | Endpoint | Roles | Description |
-| --- | --- | --- | --- |
-| GET | `/api/issues` | user/admin/developer | List permitted issues |
-| GET | `/api/issues/:id` | user/admin/developer | View permitted issue |
-| POST | `/api/issues` | user | Create issue |
-| PUT | `/api/issues/:id` | user/admin/developer | Update fields permitted by role |
-| PUT | `/api/issues/:id/assign` | admin | Assign active developer |
-| DELETE | `/api/issues/:id` | admin/user where permitted | Delete issue |
+| Method | Endpoint                 | Roles                      | Description                     |
+| ------ | ------------------------ | -------------------------- | ------------------------------- |
+| GET    | `/api/issues`            | user/admin/developer       | List permitted issues           |
+| GET    | `/api/issues/:id`        | user/admin/developer       | View permitted issue            |
+| POST   | `/api/issues`            | user                       | Create issue                    |
+| PUT    | `/api/issues/:id`        | user/admin/developer       | Update fields permitted by role |
+| PUT    | `/api/issues/:id/assign` | admin                      | Assign active developer         |
+| DELETE | `/api/issues/:id`        | admin/user where permitted | Delete issue                    |
 
 Create issue body:
 
@@ -136,25 +137,33 @@ Create issue body:
 
 ### Comments
 
-| Method | Endpoint | Roles | Description |
-| --- | --- | --- | --- |
-| GET | `/api/issues/:issueId/comments` | permitted issue users | List comments |
-| POST | `/api/issues/:issueId/comments` | permitted issue users | Add comment |
-| DELETE | `/api/comments/:id` | admin/comment author | Delete comment |
+| Method | Endpoint                        | Roles                 | Description    |
+| ------ | ------------------------------- | --------------------- | -------------- |
+| GET    | `/api/issues/:issueId/comments` | permitted issue users | List comments  |
+| POST   | `/api/issues/:issueId/comments` | permitted issue users | Add comment    |
+| DELETE | `/api/comments/:id`             | admin/comment author  | Delete comment |
 
 ### Users, Categories, Dashboard
 
-| Method | Endpoint | Roles | Description |
-| --- | --- | --- | --- |
-| GET | `/api/users` | admin | List regular users |
-| GET | `/api/users/developers` | admin | List active developers |
-| GET | `/api/categories` | protected | List active categories |
-| POST | `/api/categories` | admin | Create category |
-| PUT | `/api/categories/:id` | admin | Update category |
-| DELETE | `/api/categories/:id` | admin | Deactivate category |
-| GET | `/api/dashboard/user` | user | User dashboard |
-| GET | `/api/dashboard/developer` | developer | Developer dashboard |
-| GET | `/api/dashboard/admin` | admin | Admin dashboard |
+| Method | Endpoint                   | Roles     | Description            |
+| ------ | -------------------------- | --------- | ---------------------- |
+| GET    | `/api/users`               | admin     | List regular users     |
+| GET    | `/api/users/developers`    | admin     | List active developers |
+| GET    | `/api/categories`          | protected | List active categories |
+| POST   | `/api/categories`          | admin     | Create category        |
+| PUT    | `/api/categories/:id`      | admin     | Update category        |
+| DELETE | `/api/categories/:id`      | admin     | Deactivate category    |
+| GET    | `/api/dashboard/user`      | user      | User dashboard         |
+| GET    | `/api/dashboard/developer` | developer | Developer dashboard    |
+| GET    | `/api/dashboard/admin`     | admin     | Admin dashboard        |
+
+Dashboard responses include the existing statistics and recent issues, plus chart data scoped to the authenticated role:
+
+- User: status, priority, and issue-creation activity data for the user's own issues.
+- Developer: status, priority, and issue-creation activity data for assigned issues.
+- Admin: organization-wide status, priority, issue-creation activity, category, and developer workload data.
+
+Charts use responsive Recharts components with readable hover tooltips and empty states. They stack on smaller screens and use real MongoDB aggregation results; no chart values or categories are hardcoded.
 
 Responses use:
 
@@ -181,29 +190,29 @@ Errors use:
 
 Copy `backend/.env.example` to `backend/.env`.
 
-| Variable | Description |
-| --- | --- |
-| `PORT` | API port, default `5000` |
-| `NODE_ENV` | `development` or `production` |
-| `MONGO_URI` | MongoDB or MongoDB Atlas connection string |
-| `JWT_SECRET` | Secret used to sign JWTs |
-| `JWT_EXPIRES_IN` | Token lifetime, default `7d` |
-| `CLIENT_URL` | Frontend URL for CORS and reset links |
-| `SMTP_HOST` | SMTP host for reset emails |
-| `SMTP_PORT` | SMTP port |
-| `SMTP_USER` | SMTP username |
-| `SMTP_PASSWORD` | SMTP password |
-| `SMTP_FROM` | Email sender |
-| `SEED_ADMIN_EMAIL` | Admin email created by seed |
-| `SEED_ADMIN_PASSWORD` | Admin password used by seed |
-| `SEED_DEVELOPER_PASSWORD` | Password used by seeded developers |
+| Variable                  | Description                                |
+| ------------------------- | ------------------------------------------ |
+| `PORT`                    | API port, default `5000`                   |
+| `NODE_ENV`                | `development` or `production`              |
+| `MONGO_URI`               | MongoDB or MongoDB Atlas connection string |
+| `JWT_SECRET`              | Secret used to sign JWTs                   |
+| `JWT_EXPIRES_IN`          | Token lifetime, default `7d`               |
+| `CLIENT_URL`              | Frontend URL for CORS and reset links      |
+| `SMTP_HOST`               | SMTP host for reset emails                 |
+| `SMTP_PORT`               | SMTP port                                  |
+| `SMTP_USER`               | SMTP username                              |
+| `SMTP_PASSWORD`           | SMTP password                              |
+| `SMTP_FROM`               | Email sender                               |
+| `SEED_ADMIN_EMAIL`        | Admin email created by seed                |
+| `SEED_ADMIN_PASSWORD`     | Admin password used by seed                |
+| `SEED_DEVELOPER_PASSWORD` | Password used by seeded developers         |
 
 ### Frontend
 
 Copy `frontend/.env.example` to `frontend/.env`.
 
-| Variable | Description |
-| --- | --- |
+| Variable       | Description                                                   |
+| -------------- | ------------------------------------------------------------- |
 | `VITE_API_URL` | Backend API base URL, for example `http://localhost:5000/api` |
 
 ## Local Setup
