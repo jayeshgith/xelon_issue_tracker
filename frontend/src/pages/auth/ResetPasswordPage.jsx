@@ -1,6 +1,7 @@
 import { KeyRound } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import Alert from '../../components/common/Alert.jsx';
 import Button from '../../components/common/Button.jsx';
 import Input from '../../components/common/Input.jsx';
 import AuthLayout from '../../components/layout/AuthLayout.jsx';
@@ -55,8 +56,8 @@ const ResetPasswordPage = () => {
   return (
     <AuthLayout title="Create new password" subtitle="Use the reset link from your email.">
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {message ? <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{message}</p> : null}
-        {error ? <p className="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p> : null}
+        {message ? <Alert variant="success">{message}</Alert> : null}
+        {error ? <Alert variant="error">{error}</Alert> : null}
         <Input
           id="password"
           name="password"
@@ -65,6 +66,7 @@ const ResetPasswordPage = () => {
           value={form.password}
           onChange={handleChange}
           required
+          autoComplete="new-password"
         />
         <Input
           id="confirmPassword"
@@ -74,10 +76,11 @@ const ResetPasswordPage = () => {
           value={form.confirmPassword}
           onChange={handleChange}
           required
+          autoComplete="new-password"
         />
         <Button type="submit" className="w-full" disabled={submitting}>
           <KeyRound size={16} />
-          {submitting ? 'Updating password...' : 'Update password'}
+          {submitting ? 'Updating password...' : 'Update Password'}
         </Button>
       </form>
     </AuthLayout>

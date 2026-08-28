@@ -8,12 +8,14 @@ import {
   X
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext.jsx';
+import BrandMark from '../common/BrandMark.jsx';
 import Button from '../common/Button.jsx';
+import { useAuth } from '../../context/AuthContext.jsx';
+import { fullName } from '../../utils/formatters.js';
 
 const baseLink =
-  'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition hover:bg-slate-100 hover:text-slate-950';
-const activeLink = 'bg-brand-50 text-brand-900 ring-1 ring-brand-100';
+  'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition hover:bg-slate-100 hover:text-slate-950';
+const activeLink = 'bg-brand-50 text-brand-700 ring-1 ring-inset ring-brand-100';
 const inactiveLink = 'text-slate-600';
 
 const getLinks = (role) => {
@@ -47,11 +49,10 @@ const SidebarContent = ({ onClose }) => {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center justify-between border-b border-slate-200 px-5">
-        <div>
-          <p className="text-base font-semibold text-slate-950">Xelon</p>
-          <p className="text-xs font-medium text-brand-700">Issue Tracker</p>
-        </div>
+      <div className="flex h-16 items-center justify-between border-b border-slate-200/80 px-5">
+        <NavLink to="/dashboard" onClick={onClose} aria-label="Go to dashboard" className="shrink-0">
+          <BrandMark subtitle="Issue Tracker" />
+        </NavLink>
         <Button
           aria-label="Close navigation"
           title="Close navigation"
@@ -63,9 +64,11 @@ const SidebarContent = ({ onClose }) => {
           <X size={18} />
         </Button>
       </div>
-      <nav className="flex-1 space-y-1 px-3 py-4">
+
+      <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4" aria-label="Sidebar">
         {links.map((link) => {
           const Icon = link.icon;
+
           return (
             <NavLink
               key={link.to}
@@ -73,25 +76,41 @@ const SidebarContent = ({ onClose }) => {
               onClick={onClose}
               className={({ isActive }) => `${baseLink} ${isActive ? activeLink : inactiveLink}`}
             >
-              <Icon size={18} />
-              <span>{link.label}</span>
+              {({ isActive }) => (
+                <>
+                  <Icon size={18} className={`shrink-0 transition ${isActive ? 'text-brand-600' : 'text-slate-400 group-hover:text-slate-600'}`} />
+                  <span>{link.label}</span>
+                </>
+              )}
             </NavLink>
           );
         })}
       </nav>
+
+      <div className="border-t border-slate-200/80 p-4">
+        <div className="flex items-center gap-3 rounded-xl bg-slate-50 p-3">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-xs font-bold uppercase text-white" aria-hidden="true">
+            {(user?.firstName || '?')[0]}
+          </span>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-slate-900">{fullName(user)}</p>
+            <p className="truncate text-xs text-slate-500">{user?.email}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
 
 const Sidebar = ({ open, onClose }) => (
   <>
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-slate-200 bg-white lg:block">
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-slate-200/80 bg-white lg:block">
       <SidebarContent />
     </aside>
     {open ? (
       <div className="fixed inset-0 z-50 lg:hidden">
-        <button className="absolute inset-0 bg-slate-950/40" aria-label="Close navigation overlay" onClick={onClose} />
-        <aside className="relative h-full w-72 max-w-[85vw] border-r border-slate-200 bg-white shadow-xl">
+        <button className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm" aria-label="Close navigation overlay" onClick={onClose} />
+        <aside className="relative h-full w-72 max-w-[85vw] border-r border-slate-200 bg-white shadow-2xl">
           <SidebarContent onClose={onClose} />
         </aside>
       </div>

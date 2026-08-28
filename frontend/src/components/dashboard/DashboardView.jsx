@@ -2,6 +2,7 @@ import {
   AlertCircle,
   CheckCircle2,
   Clock3,
+  LayoutDashboard,
   ListChecks,
   Users,
 } from "lucide-react";
@@ -96,9 +97,19 @@ const DashboardView = ({ role, title, subtitle }) => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-950">{title}</h1>
-        <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
+      <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white px-6 py-6 shadow-card">
+        <span
+          className="pointer-events-none absolute -right-10 -top-16 h-44 w-44 rounded-full bg-brand-50 blur-2xl"
+          aria-hidden="true"
+        />
+        <div className="relative">
+          <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-brand-600">
+            <LayoutDashboard size={13} aria-hidden="true" />
+            Overview
+          </p>
+          <h1 className="mt-1.5 text-2xl font-bold tracking-tight text-slate-950">{title}</h1>
+          <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
+        </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {defaultCards(dashboard, role).map((card) => (

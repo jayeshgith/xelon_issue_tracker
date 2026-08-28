@@ -104,13 +104,13 @@ const IssuesPage = () => {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-slate-950">{title}</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-950">{title}</h1>
           <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
         </div>
         {user?.role === 'user' ? (
           <Link
             to="/issues/create"
-            className="inline-flex items-center justify-center gap-2 self-start rounded-md bg-brand-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-900"
+            className="inline-flex shrink-0 items-center justify-center gap-2 self-start rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-brand-600/20 transition hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
           >
             <PlusCircle size={16} />
             Create Issue
@@ -129,10 +129,11 @@ const IssuesPage = () => {
       {loading ? <LoadingState label="Loading issues..." /> : null}
       {error && !loading ? <ErrorState message={error} onRetry={loadIssues} /> : null}
       {!loading && !error ? <IssueTable issues={issues} onDelete={handleDelete} /> : null}
-      {!loading && !error && pagination ? (
-        <div className="flex items-center justify-between text-sm text-slate-600">
-          <span>
-            Page {pagination.page} of {pagination.pages} ({pagination.total} issues)
+      {!loading && !error && pagination && pagination.pages > 1 ? (
+        <div className="panel flex flex-col items-center justify-between gap-3 px-5 py-4 sm:flex-row">
+          <span className="text-sm text-slate-600">
+            Page <span className="font-semibold text-slate-900">{pagination.page}</span> of{' '}
+            <span className="font-semibold text-slate-900">{pagination.pages}</span> — {pagination.total} issues
           </span>
           <div className="flex gap-2">
             <Button

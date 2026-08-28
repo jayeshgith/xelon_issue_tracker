@@ -1,6 +1,7 @@
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Alert from '../../components/common/Alert.jsx';
 import Button from '../../components/common/Button.jsx';
 import Input from '../../components/common/Input.jsx';
 import AuthLayout from '../../components/layout/AuthLayout.jsx';
@@ -39,48 +40,51 @@ const LoginPage = () => {
 
   return (
     <AuthLayout
-      title="Sign in"
-      subtitle="Access your dashboard using your Xelon account."
+      title="Welcome back"
+      subtitle="Sign in to continue to your dashboard."
       showBackLink={false}
       footer={
         <>
-          New user?{' '}
-          <Link to="/register" className="font-medium text-brand-700 hover:text-brand-900">
-            Create an account
+          Don&apos;t have an account?{' '}
+          <Link to="/register" className="font-semibold text-brand-700 hover:text-brand-900">
+            Register
           </Link>
         </>
       }
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {error ? <p className="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p> : null}
-        <Input id="email" name="email" label="Email" type="email" value={form.email} onChange={handleChange} required />
+        {error ? <Alert variant="error">{error}</Alert> : null}
+        <Input id="email" name="email" label="Email" type="email" placeholder="you@example.com" value={form.email} onChange={handleChange} required autoComplete="email" />
         <div>
-          <Input
-            id="password"
-            name="password"
-            label="Password"
-            type={showPassword ? 'text' : 'password'}
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-          <button
-            type="button"
-            className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-slate-900"
-            onClick={() => setShowPassword((value) => !value)}
-          >
-            {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
-            {showPassword ? 'Hide password' : 'Show password'}
-          </button>
-        </div>
-        <div className="flex items-center justify-between">
-          <Link to="/forgot-password" className="text-sm font-medium text-brand-700 hover:text-brand-900">
-            Forgot password?
-          </Link>
+          <div className="relative">
+            <Input
+              id="password"
+              name="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              value={form.password}
+              onChange={handleChange}
+              required
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              className="absolute right-3 top-[42px] grid h-7 w-7 place-items-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+              onClick={() => setShowPassword((value) => !value)}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
+          <div className="mt-2 flex justify-end">
+            <Link to="/forgot-password" className="text-xs font-medium text-brand-700 hover:text-brand-900">
+              Forgot password?
+            </Link>
+          </div>
         </div>
         <Button type="submit" className="w-full" disabled={submitting}>
           <LogIn size={16} />
-          {submitting ? 'Signing in...' : 'Sign in'}
+          {submitting ? 'Signing in...' : 'Sign In'}
         </Button>
       </form>
     </AuthLayout>

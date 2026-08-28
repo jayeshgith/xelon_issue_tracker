@@ -1,3 +1,4 @@
+import { PlusCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ErrorState from '../../components/common/ErrorState.jsx';
@@ -47,9 +48,14 @@ const CreateIssuePage = () => {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-950">Create Issue</h1>
-        <p className="mt-1 text-sm text-slate-500">Report a technical problem for admin review.</p>
+      <div className="flex items-center gap-3">
+        <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-100">
+          <PlusCircle size={22} aria-hidden="true" />
+        </span>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-950">Create Issue</h1>
+          <p className="mt-0.5 text-sm text-slate-500">Report a technical problem for admin review.</p>
+        </div>
       </div>
       {loading ? <LoadingState label="Loading form..." /> : null}
       {error && !loading ? <ErrorState message={error} onRetry={loadCategories} /> : null}

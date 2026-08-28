@@ -1,3 +1,4 @@
+import { PencilLine } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ErrorState from '../../components/common/ErrorState.jsx';
@@ -51,9 +52,14 @@ const EditIssuePage = () => {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-950">Edit Issue</h1>
-        <p className="mt-1 text-sm text-slate-500">Update issue details while permissions allow it.</p>
+      <div className="flex items-center gap-3">
+        <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-700 ring-1 ring-brand-100">
+          <PencilLine size={22} aria-hidden="true" />
+        </span>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-950">Edit Issue</h1>
+          <p className="mt-0.5 text-sm text-slate-500">Update issue details while permissions allow it.</p>
+        </div>
       </div>
       {loading ? <LoadingState label="Loading issue..." /> : null}
       {error && !loading ? <ErrorState message={error} onRetry={loadData} /> : null}

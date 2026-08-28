@@ -1,6 +1,7 @@
 import { UserPlus } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Alert from '../../components/common/Alert.jsx';
 import Button from '../../components/common/Button.jsx';
 import Input from '../../components/common/Input.jsx';
 import AuthLayout from '../../components/layout/AuthLayout.jsx';
@@ -71,47 +72,52 @@ const RegisterPage = () => {
 
   return (
     <AuthLayout
-      title="Create user account"
-      subtitle="Public registration creates a regular user account only."
+      title="Create your account"
+      subtitle="Join Xelon as a user and start reporting issues."
       showBackLink={false}
       footer={
         <>
           Already registered?{' '}
-          <Link to="/login" className="font-medium text-brand-700 hover:text-brand-900">
+          <Link to="/login" className="font-semibold text-brand-700 hover:text-brand-900">
             Sign in
           </Link>
         </>
       }
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {error ? <p className="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p> : null}
+        {error ? <Alert variant="error">{error}</Alert> : null}
         <div className="grid gap-4 sm:grid-cols-2">
-          <Input id="firstName" name="firstName" label="First Name" value={form.firstName} onChange={handleChange} required />
-          <Input id="lastName" name="lastName" label="Last Name" value={form.lastName} onChange={handleChange} required />
+          <Input id="firstName" name="firstName" label="First Name" value={form.firstName} onChange={handleChange} required autoComplete="given-name" />
+          <Input id="lastName" name="lastName" label="Last Name" value={form.lastName} onChange={handleChange} required autoComplete="family-name" />
         </div>
-        <Input id="email" name="email" label="Email" type="email" value={form.email} onChange={handleChange} required />
-        <Input id="phone" name="phone" label="Phone Number" value={form.phone} onChange={handleChange} required />
-        <Input
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
-        <Input
-          id="confirmPassword"
-          name="confirmPassword"
-          label="Confirm Password"
-          type="password"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          required
-        />
+        <Input id="email" name="email" label="Email" type="email" placeholder="you@example.com" value={form.email} onChange={handleChange} required autoComplete="email" />
+        <Input id="phone" name="phone" label="Phone Number" placeholder="+91XXXXXXXXXX" value={form.phone} onChange={handleChange} required autoComplete="tel" />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Input
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            placeholder="8+ chars, letters & numbers"
+            value={form.password}
+            onChange={handleChange}
+            required
+            autoComplete="new-password"
+          />
+          <Input
+            id="confirmPassword"
+            name="confirmPassword"
+            label="Confirm Password"
+            type="password"
+            value={form.confirmPassword}
+            onChange={handleChange}
+            required
+            autoComplete="new-password"
+          />
+        </div>
         <Button type="submit" className="w-full" disabled={submitting}>
           <UserPlus size={16} />
-          {submitting ? 'Creating account...' : 'Create account'}
+          {submitting ? 'Creating account...' : 'Create Account'}
         </Button>
       </form>
     </AuthLayout>

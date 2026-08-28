@@ -1,5 +1,6 @@
 import { Mail } from 'lucide-react';
 import { useState } from 'react';
+import Alert from '../../components/common/Alert.jsx';
 import Button from '../../components/common/Button.jsx';
 import Input from '../../components/common/Input.jsx';
 import AuthLayout from '../../components/layout/AuthLayout.jsx';
@@ -31,12 +32,21 @@ const ForgotPasswordPage = () => {
   return (
     <AuthLayout title="Reset password" subtitle="Enter your account email to receive a reset link.">
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {message ? <p className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{message}</p> : null}
-        {error ? <p className="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p> : null}
-        <Input id="email" label="Email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+        {message ? <Alert variant="success">{message}</Alert> : null}
+        {error ? <Alert variant="error">{error}</Alert> : null}
+        <Input
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="you@example.com"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          required
+          autoComplete="email"
+        />
         <Button type="submit" className="w-full" disabled={submitting}>
           <Mail size={16} />
-          {submitting ? 'Sending link...' : 'Send reset link'}
+          {submitting ? 'Sending link...' : 'Send Reset Link'}
         </Button>
       </form>
     </AuthLayout>

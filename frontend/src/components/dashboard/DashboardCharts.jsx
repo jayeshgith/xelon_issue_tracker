@@ -47,10 +47,13 @@ const ChartTooltip = ({ active, payload, label }) => {
 };
 
 const ChartPanel = ({ title, description, children }) => (
-  <section className="panel min-w-0 p-5">
-    <div className="mb-4">
-      <h2 className="text-base font-semibold text-slate-950">{title}</h2>
-      <p className="mt-1 text-sm text-slate-500">{description}</p>
+  <section className="panel min-w-0 p-5 transition duration-300 hover:shadow-lift">
+    <div className="mb-4 flex items-center justify-between gap-3">
+      <div>
+        <h2 className="text-base font-semibold text-slate-950">{title}</h2>
+        <p className="mt-1 text-sm text-slate-500">{description}</p>
+      </div>
+      <span className="hidden h-2 w-2 shrink-0 rounded-full bg-brand-500 sm:block" aria-hidden="true" />
     </div>
     {children}
   </section>

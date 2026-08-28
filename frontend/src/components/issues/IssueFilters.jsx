@@ -5,7 +5,7 @@ import Input from '../common/Input.jsx';
 import Select from '../common/Select.jsx';
 
 const IssueFilters = ({ filters, categories, developers, isAdmin, onChange, onApply, onReset }) => (
-  <form className="panel grid gap-4 p-4 lg:grid-cols-6" onSubmit={onApply}>
+  <form className="panel grid gap-4 p-5 lg:grid-cols-6" onSubmit={onApply}>
     <div className="lg:col-span-2">
       <Input
         id="search"

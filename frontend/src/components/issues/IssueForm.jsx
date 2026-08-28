@@ -45,9 +45,15 @@ const IssueForm = ({ categories, initialValues, submitting, submitLabel = 'Save 
   };
 
   return (
-    <form className="panel space-y-5 p-5" onSubmit={handleSubmit}>
-      {error ? <p className="rounded-md bg-rose-50 px-3 py-2 text-sm text-rose-700">{error}</p> : null}
-      <Input id="title" name="title" label="Issue Title" value={form.title} onChange={handleChange} required />
+    <form className="panel space-y-5 p-6" onSubmit={handleSubmit}>
+      <div>
+        <h2 className="text-base font-semibold text-slate-950">Issue details</h2>
+        <p className="mt-1 text-sm text-slate-500">Provide the information needed to start working on this issue.</p>
+      </div>
+      {error ? (
+        <p className="rounded-lg border border-rose-200 bg-rose-50 px-3.5 py-2.5 text-sm text-rose-800">{error}</p>
+      ) : null}
+      <Input id="title" name="title" label="Issue Title" placeholder="Short, clear summary of the problem" value={form.title} onChange={handleChange} required />
       <div className="grid gap-4 sm:grid-cols-2">
         <Select id="category" name="category" label="Category" value={form.category} onChange={handleChange} required>
           <option value="">Select category</option>
@@ -69,14 +75,17 @@ const IssueForm = ({ categories, initialValues, submitting, submitLabel = 'Save 
         id="description"
         name="description"
         label="Description"
+        placeholder="Describe the problem in as much detail as possible"
         value={form.description}
         onChange={handleChange}
         required
       />
-      <Button type="submit" disabled={submitting}>
-        <Save size={16} />
-        {submitting ? 'Saving...' : submitLabel}
-      </Button>
+      <div className="flex items-center justify-end gap-2 border-t border-slate-100 pt-5">
+        <Button type="submit" disabled={submitting}>
+          <Save size={16} />
+          {submitting ? 'Saving...' : submitLabel}
+        </Button>
+      </div>
     </form>
   );
 };

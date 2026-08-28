@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AppLayout from '../components/layout/AppLayout.jsx';
+import LandingPage from '../pages/LandingPage.jsx';
 import AdminDashboard from '../pages/admin/AdminDashboard.jsx';
 import CategoriesPage from '../pages/admin/CategoriesPage.jsx';
 import DevelopersPage from '../pages/admin/DevelopersPage.jsx';
@@ -20,7 +21,7 @@ import RoleRoute from './RoleRoute.jsx';
 
 const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<Navigate to="/dashboard" replace />} />
+    <Route path="/" element={<LandingPage />} />
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<RegisterPage />} />
     <Route path="/forgot-password" element={<ForgotPasswordPage />} />
