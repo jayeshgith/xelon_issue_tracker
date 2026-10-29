@@ -1,4 +1,4 @@
-import { Github, LibraryBig } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import BrandMark from '../common/BrandMark.jsx';
 
@@ -46,13 +46,16 @@ const LandingFooter = () => {
           <div>
             <p className="text-sm font-semibold text-slate-950">Resources</p>
             <ul className="mt-4 space-y-2.5">
-              <li className="flex items-center gap-2 text-sm text-slate-500">
-                <Github size={15} aria-hidden="true" />
-                <span>GitHub</span>
-              </li>
-              <li className="flex items-center gap-2 text-sm text-slate-500">
-                <LibraryBig size={15} aria-hidden="true" />
-                <span>Documentation</span>
+              <li>
+                <a
+                  href="https://github.com/jayeshgith/xelon_issue_tracker.git"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-sm text-slate-500 transition hover:text-brand-700"
+                >
+                  <Github size={15} aria-hidden="true" />
+                  <span>GitHub</span>
+                </a>
               </li>
             </ul>
           </div>
