@@ -61,7 +61,7 @@ const LandingFooter = () => {
           </div>
         </div>
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-slate-100 pt-6 sm:flex-row">
-          <p className="text-xs text-slate-400">© 2026 Xelon Issue Tracker. All rights reserved.</p>
+          <p className="text-xs text-slate-400">© 2026 Xelon Issue Tracker. All rights reserved. | Annu@gmail.com</p>
           <p className="text-xs font-medium text-slate-400">
             Track. Assign. <span className="text-brand-600">Resolve.</span>
           </p>
